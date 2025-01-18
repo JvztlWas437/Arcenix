@@ -1,0 +1,143 @@
+<?php
+include('db/db.php'); // Include the database connection
+?>
+
+<!-- Login Form HTML remains the same as shown in the previous message -->
+
+<html lang="en" data-bs-theme="dark"><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/content/location/location.js" id="eppiocemhmnlbhjplcgkofciiegomcon"></script><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/libs/extend-native-history-api.js"></script><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/libs/requests.js"></script><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login - Arcenix</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="http://www.arcenix.fun/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- HTMX and JS Libraries -->
+    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
+    
+    <style>
+        html {
+            min-height: 100%;
+        }
+        body {
+            height: 100vh;
+        }
+        .htmx-indicator {
+            opacity: 0;
+        }
+        .htmx-request .htmx-indicator {
+            opacity: 1;
+            transition: opacity 200ms ease-in;
+        }
+        .htmx-request.htmx-indicator {
+            opacity: 1;
+            transition: opacity 200ms ease-in;
+        }
+    </style>
+<style>                      .htmx-indicator{opacity:0}                      .htmx-request .htmx-indicator{opacity:1; transition: opacity 200ms ease-in;}                      .htmx-request.htmx-indicator{opacity:1; transition: opacity 200ms ease-in;}                    </style></head>
+
+<body class="d-flex flex-column" __processed_51c0c84c-4ad4-415e-94f4-ad6dfeb97c59__="true">
+
+    <!-- Header -->
+    <header class="p-0 mb-3 navbar navbar-expand-lg sticky-top">
+        <div class="px-2 py-1 bg-primary w-100">
+            <div class="container">
+                <div class="d-flex align-items-center justify-content-between">
+                    <a href="http://www.arcenix.fun/" class="d-lg-none">
+                        <img src="http://www.arcenix.fun/siteAssets/logo.png" alt="Arcenix" height="26">
+                    </a>
+                    <button class="navbar-toggler p-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbartop" aria-controls="navbartop" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbartop">
+                        <ul class="nav">
+                            <li><a href="http://www.arcenix.fun/" class="nav-link">Home</a></li>
+                            <li><a href="http://www.arcenix.fun/users" class="nav-link">Users</a></li>
+                            <li><a href="https://discord.gg/XkMUz3Csj4" class="nav-link">Discord</a></li>
+                        </ul>
+                        <form class="d-flex ms-auto">
+                            <input type="search" class="form-control rounded-start" placeholder="Search">
+                            <button type="button" class="btn btn-dark bg-black ms-2">
+                                <span class="bi bi-search"></span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mt-3 mb-5">
+        
+        <!-- Alert -->
+        <div class="alert alert-warning" role="alert">
+            This site is <b>unfinished!</b> Join the <a href="https://discord.gg/XkMUz3Csj4">discord</a> for more information. Registrations now open for alpha!
+        </div>
+        
+        <!-- Login and Info Section -->
+        <div class="d-flex gap-4 justify-content-center">
+            
+            <!-- Login Card -->
+            <div class="card" style="max-width: 20em;">
+                <div class="card-body">
+                    <h5 class="card-title">Log into Arcenix</h5>
+                    <form method="post" action="http://www.arcenix.fun/login">
+                        <div class="mb-3">
+                            <img src="http://www.arcenix.fun/images/logo.png" alt="Logo" class="img-fluid mx-auto d-block mt-2" style="max-width: 150px;">
+                        </div>
+                        <input type="text" class="form-control my-2" id="usr" name="usr" placeholder="Username">
+                        <input type="password" class="form-control my-2" id="pwd" name="pwd" placeholder="Password">
+                        <button type="submit" class="btn btn-primary w-100 mt-3">Login</button>
+                    </form>
+                    <a href="http://www.arcenix.fun/register" class="btn btn-secondary w-100 mt-2">Register</a>
+                </div>
+            </div>
+
+            <!-- Info Cards -->
+            <div class="card flex-grow-1">
+                <div class="card-body">
+                    <h5 class="card-title">Did you know...</h5>
+                    <div id="fact" class="text-muted">
+                        <span class="spinner-border text-primary"></span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">News</h5>
+                    <div id="news" class="text-muted">
+                        <span class="spinner-border text-primary"></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-body-tertiary mt-auto">
+        <div class="container py-3 d-flex justify-content-between align-items-center">
+            <div class="d-flex flex-column align-items-center">
+                
+                <small class="text-muted fw-semibold">©2024 Arcenix</small>
+            </div>
+            <div>
+                <a href="http://www.arcenix.fun/legal/tos" class="text-muted me-3 text-decoration-none">Terms of Service</a>
+                <a href="http://www.arcenix.fun/legal/privacy" class="text-muted me-3 text-decoration-none">Privacy</a>
+                <a href="http://www.arcenix.fun/discord" class="text-muted text-decoration-none">Discord</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>cssVars({include: '[css-include]', onlyLegacy: true});</script>
+
+
+
+
+</body></html>
