@@ -1,37 +1,3 @@
-<?php
-include('db/db.php'); // Include the database connection
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Retrieve form inputs
-    $username = $_POST['usr'];
-    $password = $_POST['pwd'];
-
-    // Simple validation
-    if (!empty($username) && !empty($password)) {
-        // Check if the username already exists
-        $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($result->num_rows > 0) {
-            $error_message = "Username already exists.";
-        } else {
-            // Hash the password and insert the user into the database
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-            $stmt->bind_param("ss", $username, $hashed_password);
-            if ($stmt->execute()) {
-                $success_message = "Registration successful! You can now log in.";
-            } else {
-                $error_message = "Error registering user.";
-            }
-        }
-    } else {
-        $error_message = "Please enter both username and password.";
-    }
-}
-?>
 
 <!-- Registration Form HTML -->
 <html lang="en" data-bs-theme="dark">
